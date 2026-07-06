@@ -102,6 +102,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
   Made with ❤️ for the Persian-speaking cinema community.
 </div>
 ```
-
-تغییرات دکمه‌ها را ذخیره کنید و فایل README را در گیت‌هاب آپدیت کنید. 
-اگر آماده بودید، به من بگویید تا بریم سراغ **مهم‌ترین بخش**: ساخت صفحه اختصاصی هر فیلم (وقتی روی پوستر کلیک می‌کنید، اطلاعات کامل فیلم باز شود)!
