@@ -1,7 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { Progress } from "@/components/ui/progress";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -28,7 +27,7 @@ export default async function DashboardPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white p-4 md:p-8">
+    <div className="min-h-screen bg-[#0e0e0e] text-white p-4 md:p-8">
       <div className="max-w-6xl mx-auto flex flex-col-reverse md:flex-row gap-8">
         
         {/* بخش اصلی (وسط) */}
@@ -39,7 +38,7 @@ export default async function DashboardPage() {
             <h2 className="text-2xl font-bold mb-6 border-r-4 border-blue-600 pr-3">در حال تماشا</h2>
             <div className="space-y-4">
               {mockWatching.map((show) => (
-                <div key={show.id} className="flex flex-col sm:flex-row gap-4 bg-gray-950/60 border border-gray-800 p-4 rounded-xl hover:border-gray-600 transition-colors">
+                <div key={show.id} className="flex flex-col sm:flex-row gap-4 bg-[#1a1a1a] border border-gray-800 p-4 rounded-xl hover:border-gray-600 transition-colors">
                   {/* پوستر سریال */}
                   <div className="w-full sm:w-24 h-36 sm:h-36 rounded-lg overflow-hidden flex-shrink-0 bg-gray-800">
                     <img src={show.poster} alt={show.title} className="w-full h-full object-cover" />
@@ -56,7 +55,15 @@ export default async function DashboardPage() {
                         <span>پیشرفت شما</span>
                         <span>{show.progress}%</span>
                       </div>
-                      <Progress value={show.progress} className="h-2 bg-gray-800 [&>div]:bg-blue-600" />
+                      
+                      {/* نوار پیشرفت سفارشی (بدون ارور Hydration) */}
+                      <div className="w-full h-2 bg-gray-800 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-blue-600 rounded-full transition-all" 
+                          style={{ width: `${show.progress}%` }}
+                        />
+                      </div>
+
                       <div className="mt-4">
                         <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
                           ✅ تماشا کردم (Check-in)
@@ -87,7 +94,7 @@ export default async function DashboardPage() {
 
         {/* نوار کناری (آمار و پروفایل) */}
         <aside className="w-full md:w-80 flex-shrink-0">
-          <div className="bg-gray-950/60 border border-gray-800 rounded-xl p-6 sticky top-24">
+          <div className="bg-[#1a1a1a] border border-gray-800 rounded-xl p-6 sticky top-24">
             <div className="flex items-center gap-4 mb-6 pb-6 border-b border-gray-800">
               <Avatar className="w-16 h-16 border-2 border-blue-600">
                 <AvatarFallback className="bg-gray-800 text-2xl text-blue-500">
@@ -113,8 +120,8 @@ export default async function DashboardPage() {
             </div>
 
             <Link href="/" className="block mt-6">
-              <Button variant="outline" className="w-full border-gray-700 hover:bg-gray-800">
-                کاوش در فیلم‌ها
+              <Button className="w-full bg-gray-800 hover:bg-gray-700 text-white border border-gray-700">
+              کاوش در فیلم‌ها
               </Button>
             </Link>
           </div>
