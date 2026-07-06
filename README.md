@@ -23,7 +23,7 @@ Built with a modern tech stack and powered by the TMDB (The Movie Database) API.
 ![Landing Page](Landing.webp)
 
 ### Dashboard
-![Dashboard](dashboard.png)
+![Dashboard](dashboard.webp)
 
 ---
 
