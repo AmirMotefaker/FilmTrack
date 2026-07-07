@@ -4,6 +4,28 @@ import { ChevronLeft } from "lucide-react";
 import ActionButtons from "@/components/ActionButtons";
 import CommentsSection from "@/components/CommentsSection";
 import { createClient } from "@/lib/supabase/server";
+import type { Metadata } from "next";
+
+// تابع تولید متادیتا برای سئو
+export async function generateMetadata({ params, searchParams }: { params: Promise<{ id: string }>, searchParams: Promise<{ type?: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const { type: rawType } = await searchParams;
+  const type = rawType === 'tv' ? 'tv' : 'movie';
+  const apiKey = process.env.TMDB_API_KEY;
+
+  try {
+    const res = await fetch(`https://api.themoviedb.org/3/${type}/${id}?api_key=${apiKey}&language=en-US`);
+    const data = await res.json();
+    const title = data.title || data.name;
+    
+    return {
+      title: `دانلود و تماشای ${title} | CineFan`,
+      description: data.overview?.slice(0, 150) || `اطلاعات کامل، امتیاز و نظرات کاربران درباره ${title} در سینفن.`,
+    };
+  } catch {
+    return { title: "CineFan | فیلم و سریال" };
+  }
+}
 
 export default async function TitlePage({
   params,
