@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import ActionButtons from "@/components/ActionButtons";
+import CommentsSection from "@/components/CommentsSection";
+import { createClient } from "@/lib/supabase/server";
 
 export default async function TitlePage({
   params,
@@ -44,6 +46,16 @@ export default async function TitlePage({
     ? new Date(data.first_air_date).getFullYear() 
     : 'N/A';
   const runtime = data.runtime || (data.episode_run_time && data.episode_run_time[0]) || 0;
+
+  // گرفتن نظرات از Supabase
+  const supabase = await createClient();
+  const { data: { session } } = await supabase.auth.getSession();
+  
+  const { data: comments } = await supabase
+    .from('comments')
+    .select('*')
+    .eq('title_id', Number(id))
+    .order('created_at', { ascending: false });
 
   return (
     <div className="min-h-screen bg-[#0e0e0e] text-white relative">
@@ -116,6 +128,15 @@ export default async function TitlePage({
               <h2 className="text-xl font-bold mb-2">خلاصه داستان</h2>
               <p className="text-gray-400 leading-relaxed">{data.overview || "خلاصه‌ای برای این عنوان موجود نیست."}</p>
             </div>
+
+            {/* بخش نظرات (Anti-Spoiler) */}
+            <CommentsSection 
+              titleId={id} 
+              titleType={type} 
+              initialComments={comments || []} 
+              isLoggedIn={!!session} 
+            />
+
           </div>
 
         </div>
