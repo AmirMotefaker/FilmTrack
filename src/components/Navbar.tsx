@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import LogoutButton from "./LogoutButton";
-import { Search, Clapperboard, Film, ListVideo, Tv } from "lucide-react";
+import LiveSearch from "./LiveSearch";
+import { Clapperboard, Film, ListVideo, Tv } from "lucide-react";
 
 export default async function Navbar() {
   const supabase = await createClient();
@@ -35,15 +35,9 @@ export default async function Navbar() {
           </nav>
         </div>
 
-        {/* چپ: سرچ بار و احراز هویت */}
+        {/* چپ: سرچ بار زنده و احراز هویت */}
         <div className="flex items-center gap-4">
-          <div className="hidden lg:block relative w-64">
-            <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-            <Input 
-              placeholder="جستجوی فیلم یا سریال..." 
-              className="bg-[#1a1a1a] border-gray-800 text-white placeholder:text-gray-500 pr-10"
-            />
-          </div>
+          <LiveSearch />
 
           {session ? (
             <>
