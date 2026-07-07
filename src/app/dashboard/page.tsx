@@ -136,11 +136,20 @@ export default async function DashboardPage() {
               ))}
             </div>
 
-            <Link href="/" className="block mt-6">
-              <Button className="w-full bg-gray-800 hover:bg-gray-700 text-white border border-gray-700">
-                کاوش در فیلم‌ها
-              </Button>
-            </Link>
+            {/* دکمه‌های ناوبری */}
+            <div className="flex flex-col gap-3 mt-6">
+              <Link href="/calendar" className="block">
+                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                  📅 تقویم پخش سریال‌ها
+                </Button>
+              </Link>
+              <Link href="/" className="block">
+                <Button className="w-full bg-gray-800 hover:bg-gray-700 text-white border border-gray-700">
+                  کاوش در فیلم‌ها
+                </Button>
+              </Link>
+            </div>
+
           </div>
         </aside>
 
