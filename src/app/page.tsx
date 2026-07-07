@@ -1,13 +1,16 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
+// تعریف تایپ برای داده‌های TMDB
 type TMDBResult = {
   id: number;
   poster_path: string | null;
+  backdrop_path?: string | null;
   name?: string;
   title?: string;
 };
 
+// تابع دریافت داده از TMDB
 async function fetchTMDB(endpoint: string) {
   const apiKey = process.env.TMDB_API_KEY;
   if (!apiKey) return [];
@@ -20,6 +23,34 @@ async function fetchTMDB(endpoint: string) {
     return [];
   }
 }
+
+// کامپوننت داخلی برای رندر کردن لیست‌های افقی
+const Carousel = ({ title, items, type }: { title: string; items: TMDBResult[]; type: "tv" | "movie" }) => {
+  if (!items || items.length === 0) return null;
+  return (
+    <div className="mb-12">
+      <h2 className="text-xl font-bold text-white mb-4 pr-1">{title}</h2>
+      <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+        {items.slice(0, 20).map((item) => (
+          <Link href={`/title/${item.id}?type=${type}`} key={item.id} className="flex-shrink-0 w-32 md:w-40 group">
+            <div className="w-full h-48 md:h-60 bg-gray-800 rounded-lg overflow-hidden transition-transform group-hover:scale-105 shadow-lg">
+              {item.poster_path && (
+                <img 
+                  src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
+                  alt={item.title || item.name || "Poster"}
+                  className="w-full h-full object-cover"
+                />
+              )}
+            </div>
+            <p className="mt-2 text-sm text-gray-400 truncate group-hover:text-white transition-colors">
+              {item.title || item.name}
+            </p>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 export default async function Home() {
   // گرفتن دیتای دسته‌بندی‌های مختلف به صورت همزمان برای سرعت بالاتر
@@ -38,34 +69,6 @@ export default async function Home() {
     { id: 10765, name: "علمی-تخیلی" },
     { id: 10759, name: "اکشن و ماجراجویی" },
   ];
-
-  // کامپوننت داخلی برای رندر کردن لیست‌ها
-  const Carousel = ({ title, items }: { title: string; items: TMDBResult[] }) => {
-    if (items.length === 0) return null;
-    return (
-      <div className="mb-12">
-        <h2 className="text-xl font-bold text-white mb-4 pr-1">{title}</h2>
-        <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-          {items.slice(0, 20).map((item) => (
-            <Link href={`/${item.id}`} key={item.id} className="flex-shrink-0 w-32 md:w-40 group">
-              <div className="w-full h-48 md:h-60 bg-gray-800 rounded-lg overflow-hidden transition-transform group-hover:scale-105 shadow-lg">
-                {item.poster_path && (
-                  <img 
-                    src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
-                    alt={item.title || item.name || "Poster"}
-                    className="w-full h-full object-cover"
-                  />
-                )}
-              </div>
-              <p className="mt-2 text-sm text-gray-400 truncate group-hover:text-white transition-colors">
-                {item.title || item.name}
-              </p>
-            </Link>
-          ))}
-        </div>
-      </div>
-    );
-  };
 
   return (
     <div className="min-h-screen text-white">
@@ -100,8 +103,8 @@ export default async function Home() {
       {/* بخش دسته‌بندی‌ها */}
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         
-        <Carousel title="🔥 سریال‌های ترند هفته" items={trendingShows} />
-        <Carousel title="🎬 فیلم‌های ترند هفته" items={trendingMovies} />
+        <Carousel title="🔥 سریال‌های ترند هفته" items={trendingShows} type="tv" />
+        <Carousel title="🎬 فیلم‌های ترند هفته" items={trendingMovies} type="movie" />
         
         {/* ژانرها (دکمه‌های شیک) */}
         <div className="mb-12">
@@ -117,8 +120,8 @@ export default async function Home() {
           </div>
         </div>
 
-        <Carousel title="⚡ بیشترین بیننده (Binged)" items={popularShows} />
-        <Carousel title="⭐ بیشترین اضافه‌شده" items={topRatedShows} />
+        <Carousel title="⚡ بیشترین بیننده (Binged)" items={popularShows} type="tv" />
+        <Carousel title="⭐ بیشترین اضافه‌شده" items={topRatedShows} type="tv" />
 
       </div>
     </div>
