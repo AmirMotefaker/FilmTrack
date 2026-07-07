@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer"; // اضافه شد
 
+export const dynamic = 'force-dynamic'; // این خط را اضافه کنید
+
 const vazirmatn = Vazirmatn({
   subsets: ["arabic", "latin"],
   display: "swap",
