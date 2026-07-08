@@ -68,6 +68,13 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
               <span>{releaseYear}</span>
               {runtime > 0 && <span>{runtime} دقیقه</span>}
               {type === 'tv' && data.number_of_seasons && <span>{data.number_of_seasons} فصل</span>}
+              
+              {/* لینک IMDb */}
+              {data.imdb_id && (
+                <a href={`https://www.imdb.com/title/${data.imdb_id}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 bg-yellow-500 text-black px-2 py-1 rounded font-bold text-xs hover:bg-yellow-400">
+                  IMDb
+                </a>
+              )}
             </div>
 
             <div className="flex flex-wrap gap-2">
