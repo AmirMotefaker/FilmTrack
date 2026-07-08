@@ -66,8 +66,6 @@ Whether you're a casual viewer or a hardcore cinephile, CineFan brings your ente
 git clone https://github.com/AmirMotefaker/CineFan.git
 cd CineFan
 ```
-2. Install dependencies
-npm install
 
 <p align="center"> <strong>Made with ❤️ for Iranians by <a href="https://github.com/AmirMotefaker">Amir Motefaker</a></strong> </p>
 
