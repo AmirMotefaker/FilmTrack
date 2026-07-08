@@ -22,13 +22,15 @@ export default function ActionButtons({ titleId, type }: { titleId: string, type
     }
 
     // ۲. ذخیره در دیتابیس
-    const { error } = await supabase
+      const { error } = await supabase
       .from('user_lists')
       .upsert({ 
         user_id: session.user.id, 
         title_id: Number(titleId), 
         title_type: type, 
         status: status 
+      }, {
+        onConflict: 'user_id,title_id' // این خط به Supabase می‌گوید اگر تکراری بود، آپدیت کن
       })
 
     if (error) {
