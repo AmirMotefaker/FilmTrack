@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useRouter } from "next/navigation"
-import { Github, Chrome } from "lucide-react" // آیکون‌های لاگین
+import { Github, Globe } from "lucide-react"
 
 export default function AuthPage() {
   const supabase = createClient()
@@ -57,7 +57,7 @@ export default function AuthPage() {
         {/* دکمه‌های ورود اجتماعی */}
         <div className="space-y-3">
           <Button onClick={() => handleOAuthLogin('google')} variant="outline" className="w-full bg-white text-black hover:bg-gray-200 border-gray-300 py-6">
-            <Chrome className="w-5 h-5 ml-2" /> ورود با گوگل
+            <Globe className="w-5 h-5 ml-2" /> ورود با گوگل
           </Button>
           <Button onClick={() => handleOAuthLogin('github')} variant="outline" className="w-full bg-[#161616] text-white hover:bg-[#222] border-gray-700 py-6">
             <Github className="w-5 h-5 ml-2" /> ورود با گیت‌هاب
