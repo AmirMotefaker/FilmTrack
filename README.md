@@ -1,4 +1,3 @@
-```markdown
 <p align="center">
   <img src="https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js" alt="Next.js" />
   <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase" />
@@ -66,60 +65,3 @@ Whether you're a casual viewer or a hardcore cinephile, CineFan brings your ente
 ```bash
 git clone https://github.com/AmirMotefaker/CineFan.git
 cd CineFan
-```
-
-### 2. Install dependencies
-
-```bash
-npm install
-```
-
-### 3. Set up environment variables
-
-Create a `.env.local` file in the root directory and add:
-
-```env
-TMDB_API_KEY=your_tmdb_api_key
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-```
-
-### 4. Run the development server
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) to see the result.
-
----
-
-## 📖 Build in Public
-
-This project is being built entirely in public! We believe in open‑source and community‑driven development.  
-Feel free to explore the code, open issues, suggest features, or contribute.
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) before submitting a pull request.
-
-1. Fork the repository  
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)  
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)  
-4. Push to the branch (`git push origin feature/AmazingFeature`)  
-5. Open a Pull Request  
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
-
----
-
-<p align="center">
-  Made with ❤️ for Iranians by <a href="https://github.com/AmirMotefaker">Amir Motefaker</a>
-</p>
-```
