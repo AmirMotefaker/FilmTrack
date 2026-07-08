@@ -67,5 +67,5 @@ git clone https://github.com/AmirMotefaker/CineFan.git
 cd CineFan
 ```
 
-<p align="center"> <strong>Made with ❤️ for Iranians by <a href="https://github.com/AmirMotefaker">Amir Motefaker</a></strong> </p> ```
+<p align="center"> <strong>Made with ❤️ for Iranians by <a href="https://github.com/AmirMotefaker">Amir Motefaker</a></strong> </p>
 
