@@ -62,6 +62,7 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
               <h2 className="text-lg text-gray-500 mt-1">{title}</h2>
             </div>
 
+            {/* بخش امتیاز و لینک‌های IMDb و Rotten Tomatoes */}
             <div className="flex flex-wrap items-center gap-4 text-gray-300 text-sm border-b border-gray-800 pb-4">
               <span className="flex items-center gap-1 font-bold text-yellow-500"><Star className="w-4 h-4 fill-yellow-500" /> {data.vote_average?.toFixed(1)}/10</span>
               <span className="text-gray-500">({data.vote_count?.toLocaleString()} رأی)</span>
@@ -69,12 +70,16 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
               {runtime > 0 && <span>{runtime} دقیقه</span>}
               {type === 'tv' && data.number_of_seasons && <span>{data.number_of_seasons} فصل</span>}
               
-              {/* لینک IMDb */}
-              {data.imdb_id && (
-                <a href={`https://www.imdb.com/title/${data.imdb_id}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 bg-yellow-500 text-black px-2 py-1 rounded font-bold text-xs hover:bg-yellow-400">
-                  IMDb
+              <div className="flex gap-2">
+                {data.imdb_id && (
+                  <a href={`https://www.imdb.com/title/${data.imdb_id}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 bg-yellow-500 text-black px-2 py-1 rounded font-bold text-xs hover:bg-yellow-400 transition-colors">
+                    IMDb
+                  </a>
+                )}
+                <a href={`https://www.rottentomatoes.com/search?search=${encodeURIComponent(title)}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 bg-red-600 text-white px-2 py-1 rounded font-bold text-xs hover:bg-red-500 transition-colors">
+                  Rotten Tomatoes
                 </a>
-              )}
+              </div>
             </div>
 
             <div className="flex flex-wrap gap-2">
@@ -116,7 +121,6 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
               </div>
             )}
 
-            {/* لیست کامل فصل‌ها و قسمت‌ها با تگ details (بدون ارور) */}
             {type === 'tv' && data.seasons && data.seasons.length > 0 && (
               <div className="mt-8">
                 <h3 className="text-lg font-bold mb-3 flex items-center gap-2"><Clapperboard className="w-5 h-5 text-blue-500" /> قسمت‌ها و فصل‌ها</h3>
@@ -137,10 +141,6 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
                       </summary>
                       <div className="p-4 pt-0 text-sm text-gray-400">
                         <p className="mb-4">{season.overview || `شامل ${season.episode_count} قسمت از این فصل.`}</p>
-                        {/* در اینجا می‌توان در آینده قسمت‌های هر فصل را لود کرد */}
-                        <div className="bg-[#0e0e0e] p-3 rounded text-xs text-gray-500">
-                          برای مشاهده لیست کامل قسمت‌های این فصل، روی فصل کلیک کنید (در آپدیت بعدی اپیزودها اضافه می‌شوند).
-                        </div>
                       </div>
                     </details>
                   ))}
