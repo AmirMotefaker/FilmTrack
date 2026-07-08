@@ -4,7 +4,6 @@ import { ChevronLeft, Star, Users, PlayCircle, Clapperboard } from "lucide-react
 import ActionButtons from "@/components/ActionButtons";
 import CommentsSection from "@/components/CommentsSection";
 import { createClient } from "@/lib/supabase/server";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 
 export default async function TitlePage({ params, searchParams }: { params: Promise<{ id: string }>, searchParams: Promise<{ type?: string }> }) {
@@ -15,7 +14,6 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
 
   if (!apiKey || !id) return notFound();
 
-  // گرفتن دیتای اصلی، بازیگران، تریلر و ترجمه فارسی
   const urls = [
     `https://api.themoviedb.org/3/${type}/${id}?api_key=${apiKey}&language=en-US&append_to_response=credits,videos`,
     `https://api.themoviedb.org/3/${type}/${id}?api_key=${apiKey}&language=fa-IR`
@@ -32,10 +30,7 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
   const releaseYear = data.release_date ? new Date(data.release_date).getFullYear() : data.first_air_date ? new Date(data.first_air_date).getFullYear() : 'N/A';
   const runtime = data.runtime || (data.episode_run_time && data.episode_run_time[0]) || 0;
 
-  // استخراج تریلر
   const trailer = data.videos?.results?.find((v: any) => v.type === 'Trailer' && v.site === 'YouTube');
-  
-  // استخراج کارگردان و ۱۰ بازیگر اول
   const director = data.credits?.crew?.find((c: any) => c.job === 'Director') || data.created_by?.[0];
   const cast = data.credits?.cast?.slice(0, 12) || [];
 
@@ -45,7 +40,6 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
 
   return (
     <div className="min-h-screen bg-[#0e0e0e] text-white relative">
-      {/* پس‌زمینه */}
       <div className="absolute top-0 left-0 w-full h-[70vh] overflow-hidden">
         {data.backdrop_path && <img src={`https://image.tmdb.org/t/p/original${data.backdrop_path}`} alt={title} className="w-full h-full object-cover opacity-20" />}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0e0e0e] via-[#0e0e0e]/80 to-transparent"></div>
@@ -55,7 +49,6 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
         <Link href="/" className="inline-flex items-center text-gray-400 hover:text-white mb-8"><ChevronLeft className="w-5 h-5" /> بازگشت</Link>
 
         <div className="flex flex-col md:flex-row gap-8">
-          {/* پوستر و دکمه‌ها */}
           <div className="w-full md:w-1/3 lg:w-1/4 flex-shrink-0">
             <div className="w-full aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-gray-800">
               {data.poster_path && <img src={`https://image.tmdb.org/t/p/w500${data.poster_path}`} alt={title} className="w-full h-full object-cover" />}
@@ -63,7 +56,6 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
             <ActionButtons titleId={id} type={type} />
           </div>
 
-          {/* اطلاعات */}
           <div className="flex-1 flex flex-col gap-4">
             <div>
               <h1 className="text-3xl md:text-5xl font-extrabold">{faTitle}</h1>
@@ -78,19 +70,16 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
               {type === 'tv' && data.number_of_seasons && <span>{data.number_of_seasons} فصل</span>}
             </div>
 
-            {/* ژانرها */}
             <div className="flex flex-wrap gap-2">
               {data.genres?.map((g: any) => <Badge key={g.id} variant="secondary" className="bg-gray-800 text-gray-300">{g.name}</Badge>)}
             </div>
 
-            {/* تریلر */}
             {trailer && (
               <a href={`https://www.youtube.com/watch?v=${trailer.key}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-red-500 hover:text-red-400 mt-2 font-medium">
                 <PlayCircle className="w-5 h-5" /> تماشای تریلر رسمی
               </a>
             )}
 
-            {/* خلاصه داستان */}
             <div className="mt-4 space-y-3">
               <div>
                 <h3 className="text-lg font-bold mb-1">خلاصه داستان (فارسی)</h3>
@@ -102,7 +91,6 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
               </div>
             </div>
 
-            {/* عوامل و بازیگران */}
             {cast.length > 0 && (
               <div className="mt-6">
                 <h3 className="text-lg font-bold mb-3 flex items-center gap-2"><Users className="w-5 h-5 text-blue-500" /> بازیگران و عوامل</h3>
@@ -121,27 +109,38 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
               </div>
             )}
 
-            {/* لیست فصل‌ها برای سریال‌ها */}
+            {/* لیست کامل فصل‌ها و قسمت‌ها با تگ details (بدون ارور) */}
             {type === 'tv' && data.seasons && data.seasons.length > 0 && (
               <div className="mt-8">
                 <h3 className="text-lg font-bold mb-3 flex items-center gap-2"><Clapperboard className="w-5 h-5 text-blue-500" /> قسمت‌ها و فصل‌ها</h3>
-                <Accordion type="single" collapsible className="w-full">
+                <div className="space-y-3">
                   {data.seasons.filter(s => s.season_number > 0).map((season: any) => (
-                    <AccordionItem key={season.id} value={`season-${season.id}`} className="border-gray-800">
-                      <AccordionTrigger className="text-white hover:no-underline">
-                        فصل {season.season_number} <span className="text-gray-500 text-sm mr-2">({season.episode_count} قسمت)</span>
-                      </AccordionTrigger>
-                      <AccordionContent className="text-gray-400">
-                        {season.overview || `شامل ${season.episode_count} قسمت از این فصل.`}
-                        <p className="text-xs text-gray-600 mt-2">سال پخش: {season.air_date ? new Date(season.air_date).getFullYear() : 'نامشخص'}</p>
-                      </AccordionContent>
-                    </AccordionItem>
+                    <details key={season.id} className="bg-[#1a1a1a] border border-gray-800 rounded-lg overflow-hidden group">
+                      <summary className="flex items-center gap-4 p-3 cursor-pointer hover:bg-gray-800 transition-colors list-none">
+                        {season.poster_path ? (
+                          <img src={`https://image.tmdb.org/t/p/w200${season.poster_path}`} alt={season.name} className="w-12 h-16 rounded object-cover flex-shrink-0" />
+                        ) : (
+                          <div className="w-12 h-16 bg-gray-700 rounded flex items-center justify-center flex-shrink-0 text-xs">بدون عکس</div>
+                        )}
+                        <div className="flex-1">
+                          <h4 className="font-bold text-white">{season.name}</h4>
+                          <p className="text-xs text-gray-500">{season.episode_count} قسمت {season.air_date ? `| پخش: ${new Date(season.air_date).getFullYear()}` : ''}</p>
+                        </div>
+                        <ChevronLeft className="w-5 h-5 text-gray-500 group-open:-rotate-90 transition-transform" />
+                      </summary>
+                      <div className="p-4 pt-0 text-sm text-gray-400">
+                        <p className="mb-4">{season.overview || `شامل ${season.episode_count} قسمت از این فصل.`}</p>
+                        {/* در اینجا می‌توان در آینده قسمت‌های هر فصل را لود کرد */}
+                        <div className="bg-[#0e0e0e] p-3 rounded text-xs text-gray-500">
+                          برای مشاهده لیست کامل قسمت‌های این فصل، روی فصل کلیک کنید (در آپدیت بعدی اپیزودها اضافه می‌شوند).
+                        </div>
+                      </div>
+                    </details>
                   ))}
-                </Accordion>
+                </div>
               </div>
             )}
 
-            {/* نظرات */}
             <CommentsSection titleId={id} titleType={type} initialComments={comments || []} isLoggedIn={!!session} />
           </div>
         </div>
