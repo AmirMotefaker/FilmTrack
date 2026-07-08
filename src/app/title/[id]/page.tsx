@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ChevronLeft, Star, Users, Youtube, Clapperboard } from "lucide-react";
+import { ChevronLeft, Star, Users, PlayCircle, Clapperboard } from "lucide-react";
 import ActionButtons from "@/components/ActionButtons";
 import CommentsSection from "@/components/CommentsSection";
 import { createClient } from "@/lib/supabase/server";
@@ -86,7 +86,7 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
             {/* تریلر */}
             {trailer && (
               <a href={`https://www.youtube.com/watch?v=${trailer.key}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-red-500 hover:text-red-400 mt-2 font-medium">
-                <Youtube className="w-5 h-5" /> تماشای تریلر رسمی
+                <PlayCircle className="w-5 h-5" /> تماشای تریلر رسمی
               </a>
             )}
 

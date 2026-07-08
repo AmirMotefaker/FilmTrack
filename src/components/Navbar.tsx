@@ -39,10 +39,26 @@ export default async function Navbar() {
                 <Tv className="w-4 h-4" /> سریال‌ها <ChevronDown className="w-4 h-4" />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="bg-[#1a1a1a] border-gray-800 text-white">
-                <DropdownMenuItem asChild><Link href="/shows?cat=trending" className="cursor-pointer"><Flame className="w-4 h-4 ml-2" /> پرطرفدار (Trending)</Link></DropdownMenuItem>
-                <DropdownMenuItem asChild><Link href="/shows?cat=added" className="cursor-pointer"><TrendingUp className="w-4 h-4 ml-2" /> بیشترین موارد اضافه شده</Link></DropdownMenuItem>
-                <DropdownMenuItem asChild><Link href="/shows?cat=watched" className="cursor-pointer"><Eye className="w-4 h-4 ml-2" /> پربیننده‌ترین‌ها</Link></DropdownMenuItem>
-                <DropdownMenuItem asChild><Link href="/shows?cat=binged" className="cursor-pointer"><Wine className="w-4 h-4 ml-2" /> پرمصرف‌ترین‌ها (Binged)</Link></DropdownMenuItem>
+                <Link href="/shows?cat=trending" className="cursor-pointer block">
+                  <DropdownMenuItem>
+                    <Flame className="w-4 h-4 ml-2" /> پرطرفدار (Trending)
+                  </DropdownMenuItem>
+                </Link>
+                <Link href="/shows?cat=added" className="cursor-pointer block">
+                  <DropdownMenuItem>
+                    <TrendingUp className="w-4 h-4 ml-2" /> بیشترین موارد اضافه شده
+                  </DropdownMenuItem>
+                </Link>
+                <Link href="/shows?cat=watched" className="cursor-pointer block">
+                  <DropdownMenuItem>
+                    <Eye className="w-4 h-4 ml-2" /> پربیننده‌ترین‌ها
+                  </DropdownMenuItem>
+                </Link>
+                <Link href="/shows?cat=binged" className="cursor-pointer block">
+                  <DropdownMenuItem>
+                    <Wine className="w-4 h-4 ml-2" /> پرمصرف‌ترین‌ها (Binged)
+                  </DropdownMenuItem>
+                </Link>
               </DropdownMenuContent>
             </DropdownMenu>
 
@@ -52,8 +68,16 @@ export default async function Navbar() {
                 <Film className="w-4 h-4" /> فیلم‌ها <ChevronDown className="w-4 h-4" />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="bg-[#1a1a1a] border-gray-800 text-white">
-                <DropdownMenuItem asChild><Link href="/movies?cat=trending" className="cursor-pointer"><Flame className="w-4 h-4 ml-2" /> پرطرفدار (Trending)</Link></DropdownMenuItem>
-                <DropdownMenuItem asChild><Link href="/movies?cat=added" className="cursor-pointer"><TrendingUp className="w-4 h-4 ml-2" /> بیشترین موارد اضافه شده</Link></DropdownMenuItem>
+                <Link href="/movies?cat=trending" className="cursor-pointer block">
+                  <DropdownMenuItem>
+                    <Flame className="w-4 h-4 ml-2" /> پرطرفدار (Trending)
+                  </DropdownMenuItem>
+                </Link>
+                <Link href="/movies?cat=added" className="cursor-pointer block">
+                  <DropdownMenuItem>
+                    <TrendingUp className="w-4 h-4 ml-2" /> بیشترین موارد اضافه شده
+                  </DropdownMenuItem>
+                </Link>
               </DropdownMenuContent>
             </DropdownMenu>
 
@@ -63,14 +87,16 @@ export default async function Navbar() {
                 <ListVideo className="w-4 h-4" /> ژانرها <ChevronDown className="w-4 h-4" />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="bg-[#1a1a1a] border-gray-800 text-white w-48">
-                <DropdownMenuItem asChild><Link href="/genres" className="cursor-pointer">تمام ژانرها</Link></DropdownMenuItem>
+                <Link href="/genres" className="cursor-pointer block">
+                  <DropdownMenuItem>تمام ژانرها</DropdownMenuItem>
+                </Link>
                 <div className="grid grid-cols-2 gap-1 p-2">
-                  <DropdownMenuItem asChild><Link href="/genre/28" className="cursor-pointer">اکشن</Link></DropdownMenuItem>
-                  <DropdownMenuItem asChild><Link href="/genre/35" className="cursor-pointer">کمدی</Link></DropdownMenuItem>
-                  <DropdownMenuItem asChild><Link href="/genre/18" className="cursor-pointer">درام</Link></DropdownMenuItem>
-                  <DropdownMenuItem asChild><Link href="/genre/27" className="cursor-pointer">ترسناک</Link></DropdownMenuItem>
-                  <DropdownMenuItem asChild><Link href="/genre/10765" className="cursor-pointer">علمی-تخیلی</Link></DropdownMenuItem>
-                  <DropdownMenuItem asChild><Link href="/genre/53" className="cursor-pointer">هیجان‌انگیز</Link></DropdownMenuItem>
+                  <Link href="/genre/28" className="cursor-pointer block"><DropdownMenuItem>اکشن</DropdownMenuItem></Link>
+                  <Link href="/genre/35" className="cursor-pointer block"><DropdownMenuItem>کمدی</DropdownMenuItem></Link>
+                  <Link href="/genre/18" className="cursor-pointer block"><DropdownMenuItem>درام</DropdownMenuItem></Link>
+                  <Link href="/genre/27" className="cursor-pointer block"><DropdownMenuItem>ترسناک</DropdownMenuItem></Link>
+                  <Link href="/genre/10765" className="cursor-pointer block"><DropdownMenuItem>علمی-تخیلی</DropdownMenuItem></Link>
+                  <Link href="/genre/53" className="cursor-pointer block"><DropdownMenuItem>هیجان‌انگیز</DropdownMenuItem></Link>
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
