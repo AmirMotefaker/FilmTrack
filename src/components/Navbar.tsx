@@ -90,13 +90,18 @@ export default async function Navbar() {
                 <Link href="/genres" className="cursor-pointer block">
                   <DropdownMenuItem>تمام ژانرها</DropdownMenuItem>
                 </Link>
-                <div className="grid grid-cols-2 gap-1 p-2">
-                  <Link href="/genre/28" className="cursor-pointer block"><DropdownMenuItem>اکشن</DropdownMenuItem></Link>
-                  <Link href="/genre/35" className="cursor-pointer block"><DropdownMenuItem>کمدی</DropdownMenuItem></Link>
-                  <Link href="/genre/18" className="cursor-pointer block"><DropdownMenuItem>درام</DropdownMenuItem></Link>
-                  <Link href="/genre/27" className="cursor-pointer block"><DropdownMenuItem>ترسناک</DropdownMenuItem></Link>
-                  <Link href="/genre/10765" className="cursor-pointer block"><DropdownMenuItem>علمی-تخیلی</DropdownMenuItem></Link>
-                  <Link href="/genre/53" className="cursor-pointer block"><DropdownMenuItem>هیجان‌انگیز</DropdownMenuItem></Link>
+                <div className="space-y-2">
+                    <h4 className="font-bold text-gray-400 border-b border-gray-700 pb-1 mb-2">ژانرهای اصلی</h4>
+                    <Link href="/genre/28" className="block hover:text-blue-500">اکشن</Link>
+                    <Link href="/genre/35" className="block hover:text-blue-500">کمدی</Link>
+                    <Link href="/genre/18" className="block hover:text-blue-500">درام</Link>
+                    <Link href="/genre/27" className="block hover:text-blue-500">ترسناک</Link>
+                    <Link href="/genre/878" className="block hover:text-blue-500">علمی-تخیلی</Link>
+                    <Link href="/genre/53" className="block hover:text-blue-500">هیجان‌انگیز</Link>
+                    <Link href="/genre/10749" className="block hover:text-blue-500">عاشقانه</Link>
+                    <Link href="/genre/80" className="block hover:text-blue-500">جنایی</Link>
+                    <Link href="/genre/16" className="block hover:text-blue-500">انیمیشن</Link>
+                    <Link href="/genre/14" className="block hover:text-blue-500">فانتزی</Link>
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>

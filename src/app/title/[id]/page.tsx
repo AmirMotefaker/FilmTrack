@@ -114,7 +114,7 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
               <div className="mt-8">
                 <h3 className="text-lg font-bold mb-3 flex items-center gap-2"><Clapperboard className="w-5 h-5 text-blue-500" /> قسمت‌ها و فصل‌ها</h3>
                 <div className="space-y-3">
-                  {data.seasons.filter(s => s.season_number > 0).map((season: any) => (
+                  {data.seasons.filter((s: any) => s.season_number > 0).map((season: any) => (
                     <details key={season.id} className="bg-[#1a1a1a] border border-gray-800 rounded-lg overflow-hidden group">
                       <summary className="flex items-center gap-4 p-3 cursor-pointer hover:bg-gray-800 transition-colors list-none">
                         {season.poster_path ? (
