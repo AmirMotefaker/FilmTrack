@@ -6,14 +6,9 @@ import CommentsSection from "@/components/CommentsSection";
 import { createClient } from "@/lib/supabase/server";
 import { Badge } from "@/components/ui/badge";
 
-// تابع ساخت لینک مستقیم برای Rotten Tomatoes
-function getRottenTomatoesUrl(title: string, type: string, releaseYear: number | string) {
+function getRottenTomatoesUrl(title: string, type: string) {
   if (!title) return "#";
-  let slug = title.toLowerCase();
-  slug = slug.replace(/'/g, ""); // حذف آپوستروف
-  slug = slug.replace(/[^a-z0-9\s]/g, ""); // حذف کاراکترهای خاص
-  slug = slug.replace(/\s+/g, "_"); // جایگزینی فاصله با آندرلاین
-  
+  let slug = title.toLowerCase().replace(/'/g, "").replace(/[^a-z0-9\s]/g, "").replace(/\s+/g, "_");
   const prefix = type === 'movie' ? 'm' : 'tv';
   return `https://www.rottentomatoes.com/${prefix}/${slug}`;
 }
@@ -42,19 +37,37 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
   const releaseYear = data.release_date ? new Date(data.release_date).getFullYear() : data.first_air_date ? new Date(data.first_air_date).getFullYear() : 'N/A';
   const runtime = data.runtime || (data.episode_run_time && data.episode_run_time[0]) || 0;
 
-  // سیستم ترجمه خودکار اگر خلاصه فارسی موجود نبود
+  // سیستم ترجمه خودکار
   let faOverview = faData.overview;
   if (!faOverview && data.overview) {
     try {
       const transRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(data.overview)}&langpair=en|fa`);
       const transData = await transRes.json();
-      if (transData.responseStatus === 200 || transData.responseData) {
-        faOverview = transData.responseData.translatedText;
-      } else {
-        faOverview = data.overview;
-      }
+      faOverview = transData.responseData?.translatedText || data.overview;
     } catch {
       faOverview = data.overview;
+    }
+  }
+
+  // --- دریافت امتیازهای دقیق از OMDb ---
+  let imdbScore = data.vote_average?.toFixed(1) || "N/A"; // پیش‌فرض TMDB
+  let rtScore = `${Math.round((data.vote_average || 0) * 10)}%`; // پیش‌فرض TMDB
+
+  if (process.env.OMDB_API_KEY && data.imdb_id) {
+    try {
+      const omdbRes = await fetch(`https://www.omdbapi.com/?i=${data.imdb_id}&apikey=${process.env.OMDB_API_KEY}`);
+      const omdbData = await omdbRes.json();
+      
+      if (omdbData.Response === "True") {
+        const ratings = omdbData.Ratings || [];
+        const imdbRating = ratings.find((r: any) => r.Source === "Internet Movie Database");
+        const rtRating = ratings.find((r: any) => r.Source === "Rotten Tomatoes");
+        
+        if (imdbRating) imdbScore = imdbRating.Value.split('/')[0]; // استخراج عدد از "8.1/10"
+        if (rtRating) rtScore = rtRating.Value; // استخراج "85%"
+      }
+    } catch {
+      // در صورت خطا، همان امتیاز TMDB نمایش داده می‌شود
     }
   }
 
@@ -66,7 +79,7 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
   const { data: { session } } = await supabase.auth.getSession();
   const { data: comments } = await supabase.from('comments').select('*').eq('title_id', Number(id)).order('created_at', { ascending: false });
 
-  const rtUrl = getRottenTomatoesUrl(title, type, releaseYear);
+  const rtUrl = getRottenTomatoesUrl(title, type);
 
   return (
     <div className="min-h-screen bg-[#0e0e0e] text-white relative">
@@ -92,33 +105,33 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
               <h2 className="text-lg text-gray-500 mt-1">{title}</h2>
             </div>
 
-            {/* بخش امتیازها و لینک‌های خارجی */}
+            {/* بخش امتیازها */}
             <div className="flex flex-wrap items-center gap-4 text-gray-300 text-sm border-b border-gray-800 pb-4 mt-2">
               
-              {/* امتیاز TMDB با تعداد آراء */}
+              {/* امتیاز TMDB */}
               <span className="flex items-center gap-1 font-bold text-yellow-500">
                 <Star className="w-4 h-4 fill-yellow-500" /> {data.vote_average?.toFixed(1)}/10
-                <span className="text-gray-500 text-xs mr-1">({data.vote_count?.toLocaleString()} رأی در TMDB)</span>
+                <span className="text-gray-500 text-xs mr-1">({data.vote_count?.toLocaleString()} رأی TMDB)</span>
               </span>
 
-              {/* IMDb با لوگوی رسمی و امتیاز */}
+              {/* IMDb با امتیاز دقیق و لایو */}
               {data.imdb_id && (
                 <a href={`https://www.imdb.com/title/${data.imdb_id}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:opacity-80 transition-opacity bg-[#1a1a1a] px-3 py-1.5 rounded-lg border border-gray-700">
                   <svg width="40" height="20" viewBox="0 0 64 32" xmlns="http://www.w3.org/2000/svg">
                     <rect width="64" height="32" rx="6" fill="#F5C518"/>
                     <text x="32" y="22" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000" text-anchor="middle">IMDb</text>
                   </svg>
-                  <span className="font-bold text-white text-base">{data.vote_average?.toFixed(1)}/10</span>
+                  <span className="font-bold text-white text-base">{imdbScore}/10</span>
                 </a>
               )}
 
-              {/* Rotten Tomatoes با لوگوی گوجه‌فرنگی رسمی (بدون متن) و امتیاز درصدی */}
+              {/* Rotten Tomatoes با درصد دقیق و لایو */}
               <a href={rtUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:opacity-80 transition-opacity bg-[#1a1a1a] px-3 py-1.5 rounded-lg border border-gray-700">
                 <svg width="28" height="28" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                   <path d="M50 12c-6 0-9 4-9 9 0 4 2 6 3 7-3 1-7 2-10 4-3 2-5 5-5 9h42c0-4-2-7-5-9-3-2-7-3-10-4 1-1 3-3 3-7 0-5-3-9-9-9z" fill="#009A44"/>
                   <path d="M14 42c-2 0-4 1-4 4v8c0 18 12 34 40 34s40-16 40-34v-8c0-3-2-4-4-4H14z" fill="#E61E2A"/>
                 </svg>
-                <span className="font-bold text-white text-base">{Math.round((data.vote_average || 0) * 10)}%</span>
+                <span className="font-bold text-white text-base">{rtScore}</span>
               </a>
             </div>
 
