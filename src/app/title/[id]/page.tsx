@@ -14,7 +14,6 @@ function getRottenTomatoesUrl(title: string, type: string, releaseYear: number |
   slug = slug.replace(/[^a-z0-9\s]/g, ""); // حذف کاراکترهای خاص
   slug = slug.replace(/\s+/g, "_"); // جایگزینی فاصله با آندرلاین
   
-  // RT معمولا برای فیلم‌ها از /m/ و برای سریال‌ها از /tv/ استفاده می‌کند
   const prefix = type === 'movie' ? 'm' : 'tv';
   return `https://www.rottentomatoes.com/${prefix}/${slug}`;
 }
@@ -52,7 +51,7 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
       if (transData.responseStatus === 200 || transData.responseData) {
         faOverview = transData.responseData.translatedText;
       } else {
-        faOverview = data.overview; // در صورت خطا، انگلیسی نشان بده
+        faOverview = data.overview;
       }
     } catch {
       faOverview = data.overview;
@@ -67,7 +66,6 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
   const { data: { session } } = await supabase.auth.getSession();
   const { data: comments } = await supabase.from('comments').select('*').eq('title_id', Number(id)).order('created_at', { ascending: false });
 
-  // ساخت لینک مستقیم RT
   const rtUrl = getRottenTomatoesUrl(title, type, releaseYear);
 
   return (
@@ -94,7 +92,7 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
               <h2 className="text-lg text-gray-500 mt-1">{title}</h2>
             </div>
 
-                        {/* بخش امتیازها و لینک‌های خارجی */}
+            {/* بخش امتیازها و لینک‌های خارجی */}
             <div className="flex flex-wrap items-center gap-4 text-gray-300 text-sm border-b border-gray-800 pb-4 mt-2">
               
               {/* امتیاز TMDB با تعداد آراء */}
@@ -116,7 +114,6 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
 
               {/* Rotten Tomatoes با لوگوی گوجه‌فرنگی رسمی (بدون متن) و امتیاز درصدی */}
               <a href={rtUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:opacity-80 transition-opacity bg-[#1a1a1a] px-3 py-1.5 rounded-lg border border-gray-700">
-                {/* لوگوی رسمی وکتوری RT */}
                 <svg width="28" height="28" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                   <path d="M50 12c-6 0-9 4-9 9 0 4 2 6 3 7-3 1-7 2-10 4-3 2-5 5-5 9h42c0-4-2-7-5-9-3-2-7-3-10-4 1-1 3-3 3-7 0-5-3-9-9-9z" fill="#009A44"/>
                   <path d="M14 42c-2 0-4 1-4 4v8c0 18 12 34 40 34s40-16 40-34v-8c0-3-2-4-4-4H14z" fill="#E61E2A"/>

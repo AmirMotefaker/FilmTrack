@@ -13,7 +13,6 @@ export default function ActionButtons({ titleId, type }: { titleId: string, type
   const handleAddToList = async (status: 'watching' | 'completed') => {
     setLoading(status)
     
-    // ۱. گرفتن کاربر فعلی
     const { data: { session } } = await supabase.auth.getSession()
     if (!session) {
       alert("برای افزودن به لیست، ابتدا باید وارد شوید.")
@@ -21,8 +20,7 @@ export default function ActionButtons({ titleId, type }: { titleId: string, type
       return
     }
 
-    // ۲. ذخیره در دیتابیس
-      const { error } = await supabase
+    const { error } = await supabase
       .from('user_lists')
       .upsert({ 
         user_id: session.user.id, 
@@ -30,7 +28,7 @@ export default function ActionButtons({ titleId, type }: { titleId: string, type
         title_type: type, 
         status: status 
       }, {
-        onConflict: 'user_id,title_id' // این خط به Supabase می‌گوید اگر تکراری بود، آپدیت کن
+        onConflict: 'user_id,title_id'
       })
 
     if (error) {
@@ -51,12 +49,16 @@ export default function ActionButtons({ titleId, type }: { titleId: string, type
       >
         {loading === 'watching' ? "در حال ذخیره..." : "➕ افزودن به لیست (در حال تماشا)"}
       </Button>
-            <Button 
+      
+      {/* دکمه تماشا کردم با رنگ سبز برای وضوح روی بک‌گراند تاریک */}
+      <Button 
         onClick={() => handleAddToList('completed')} 
         disabled={loading !== null}
         variant="outline" 
         className="w-full border-green-600 text-green-500 hover:bg-green-600 hover:text-white py-6 text-lg"
       >
+        {loading === 'completed' ? "در حال ذخیره..." : "✅ تماشا کردم"}
+      </Button>
     </div>
   )
 }
