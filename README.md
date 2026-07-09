@@ -72,7 +72,7 @@ npm install
 ```
 
 ### 3. Set up environment variables
-Create a .env.local file in the root directory and add:
+Create a **.env.local** file in the root directory and add:
 
 ```bash
 TMDB_API_KEY=your_tmdb_api_key
