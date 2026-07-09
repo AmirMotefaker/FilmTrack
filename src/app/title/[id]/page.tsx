@@ -62,43 +62,41 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
               <h2 className="text-lg text-gray-500 mt-1">{title}</h2>
             </div>
 
-                        {/* بخش امتیاز و لینک‌های IMDb، RT و Letterboxd */}
-            <div className="flex flex-wrap items-center gap-4 text-gray-300 text-sm border-b border-gray-800 pb-4 mt-2">
-              <span className="flex items-center gap-1 font-bold text-yellow-500">
-                <Star className="w-4 h-4 fill-yellow-500" /> {data.vote_average?.toFixed(1)}/10
-              </span>
-              <span className="text-gray-500">({data.vote_count?.toLocaleString()} رأی)</span>
+                        {/* بخش امتیاز و لینک‌های خارجی */}
+            <div className="flex flex-wrap items-center gap-3 text-gray-300 text-sm border-b border-gray-800 pb-4 mt-2">
               
-              <div className="flex items-center gap-3 mt-2 sm:mt-0">
-                {/* لینک IMDb با لوگوی رسمی */}
-                {data.imdb_id && (
-                  <a href={`https://www.imdb.com/title/${data.imdb_id}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:opacity-80 transition-opacity">
-                    <svg width="40" height="20" viewBox="0 0 64 32" xmlns="http://www.w3.org/2000/svg">
-                      <rect width="64" height="32" rx="6" fill="#F5C518"/>
-                      <text x="32" y="22" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000" text-anchor="middle">IMDb</text>
-                    </svg>
-                  </a>
-                )}
-                
-                {/* لینک Rotten Tomatoes با لوگوی رسمی */}
-                <a href={`https://www.rottentomatoes.com/search?search=${encodeURIComponent(title)}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:opacity-80 transition-opacity">
-                  <svg width="24" height="24" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M16 2C8.3 2 2 8.3 2 16s6.3 14 14 14 14-6.3 14-14S23.7 2 16 2zm0 4c5.5 0 10 4.5 10 10s-4.5 10-10 10S6 21.5 6 16 10.5 6 16 6z" fill="#FA320A"/>
-                    <path d="M22 16l-8 5v-10z" fill="#FA320A"/>
+              {/* IMDb با امتیاز و لینک مستقیم */}
+              {data.imdb_id && (
+                <a href={`https://www.imdb.com/title/${data.imdb_id}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:opacity-80 transition-opacity bg-[#1a1a1a] px-3 py-1.5 rounded-lg border border-gray-700">
+                  <svg width="40" height="20" viewBox="0 0 64 32" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="64" height="32" rx="6" fill="#F5C518"/>
+                    <text x="32" y="22" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000" text-anchor="middle">IMDb</text>
                   </svg>
-                  <span className="text-xs text-red-500 font-bold hidden sm:inline">Rotten Tomatoes</span>
+                  <span className="font-bold text-yellow-500 text-base">{data.vote_average?.toFixed(1)}/10</span>
                 </a>
+              )}
 
-                {/* لینک Letterboxd با لوگوی رسمی */}
-                <a href={`https://letterboxd.com/search/film/${encodeURIComponent(title)}/`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:opacity-80 transition-opacity">
-                  <svg width="40" height="20" viewBox="0 0 60 20" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="10" cy="10" r="8" fill="#FF8000"/>
-                    <circle cx="24" cy="10" r="8" fill="#00E054"/>
-                    <circle cx="38" cy="10" r="8" fill="#40BCF4"/>
-                  </svg>
-                  <span className="text-xs text-gray-400 font-bold hidden sm:inline">Letterboxd</span>
-                </a>
-              </div>
+              {/* Rotten Tomatoes با لینک جستجوی مستقیم فیلم */}
+              <a href={`https://www.rottentomatoes.com/search?search=${encodeURIComponent(title)}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:opacity-80 transition-opacity bg-[#1a1a1a] px-3 py-1.5 rounded-lg border border-gray-700">
+                <svg width="22" height="22" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M16 2C8.3 2 2 8.3 2 16s6.3 14 14 14 14-6.3 14-14S23.7 2 16 2zm0 4c5.5 0 10 4.5 10 10s-4.5 10-10 10S6 21.5 6 16 10.5 6 16 6z" fill="#FA320A"/>
+                  <path d="M22 16l-8 5v-10z" fill="#FA320A"/>
+                </svg>
+                <span className="font-bold text-red-500 text-sm hidden sm:inline">Rotten Tomatoes</span>
+                <span className="font-bold text-red-500 text-sm sm:hidden">RT</span>
+              </a>
+
+              {/* Letterboxd با لینک جستجوی مستقیم فیلم */}
+              <a href={`https://letterboxd.com/search/film/${encodeURIComponent(title)}/`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:opacity-80 transition-opacity bg-[#1a1a1a] px-3 py-1.5 rounded-lg border border-gray-700">
+                <svg width="45" height="20" viewBox="0 0 60 20" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="10" cy="10" r="8" fill="#FF8000"/>
+                  <circle cx="24" cy="10" r="8" fill="#00E054"/>
+                  <circle cx="38" cy="10" r="8" fill="#40BCF4"/>
+                </svg>
+                <span className="font-bold text-gray-300 text-sm hidden sm:inline">Letterboxd</span>
+                <span className="font-bold text-gray-300 text-sm sm:hidden">LB</span>
+              </a>
+
             </div>
 
             <div className="flex flex-wrap gap-2">
