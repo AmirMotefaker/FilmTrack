@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { createClient } from "@/lib/supabase/server";
 
-// تعریف تایپ برای داده‌های TMDB
 type TMDBResult = {
   id: number;
   poster_path: string | null;
@@ -10,7 +10,6 @@ type TMDBResult = {
   title?: string;
 };
 
-// تابع دریافت داده از TMDB
 async function fetchTMDB(endpoint: string) {
   const apiKey = process.env.TMDB_API_KEY;
   if (!apiKey) return [];
@@ -24,7 +23,6 @@ async function fetchTMDB(endpoint: string) {
   }
 }
 
-// کامپوننت داخلی برای رندر کردن لیست‌های افقی
 const Carousel = ({ title, items, type }: { title: string; items: TMDBResult[]; type: "tv" | "movie" }) => {
   if (!items || items.length === 0) return null;
   return (
@@ -53,13 +51,16 @@ const Carousel = ({ title, items, type }: { title: string; items: TMDBResult[]; 
 };
 
 export default async function Home() {
-  // گرفتن دیتای دسته‌بندی‌های مختلف به صورت همزمان برای سرعت بالاتر
   const [trendingShows, trendingMovies, popularShows, topRatedShows] = await Promise.all([
     fetchTMDB("/trending/tv/week"),
     fetchTMDB("/trending/movie/week"),
     fetchTMDB("/tv/popular"),
     fetchTMDB("/tv/top_rated"),
   ]);
+
+  // بررسی وضعیت لاگین کاربر
+  const supabase = await createClient();
+  const { data: { session } } = await supabase.auth.getSession();
 
   const genres = [
     { id: 28, name: "اکشن" },
@@ -73,7 +74,7 @@ export default async function Home() {
   return (
     <div className="min-h-screen text-white">
       
-      {/* بخش Hero (مثل TV Time) */}
+      {/* بخش Hero */}
       <div className="relative h-[50vh] min-h-[400px] w-full overflow-hidden mb-12">
         {trendingMovies[0] && (
           <div className="absolute inset-0">
@@ -92,21 +93,29 @@ export default async function Home() {
           <p className="text-gray-400 text-lg mb-8 max-w-2xl">
             به بزرگترین جامعه فارسی‌زبان عاشقان سینما بپیوندید. لیست تماشای خود را بسازید و با دوستانتان به اشتراک بگذارید.
           </p>
-          <Link href="/auth">
-            <Button size="lg" className="bg-blue-600 hover:bg-blue-700 px-10 py-6 text-lg rounded-full">
-              شروع رایگان
-            </Button>
-          </Link>
+          
+          {/* تغییر دکمه بر اساس وضعیت لاگین */}
+          {session ? (
+            <Link href="/dashboard">
+              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 px-10 py-6 text-lg rounded-full">
+                رفتن به داشبورد
+              </Button>
+            </Link>
+          ) : (
+            <Link href="/auth">
+              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 px-10 py-6 text-lg rounded-full">
+                شروع رایگان
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
 
       {/* بخش دسته‌بندی‌ها */}
       <div className="max-w-7xl mx-auto px-4 md:px-8">
-        
         <Carousel title="🔥 سریال‌های ترند هفته" items={trendingShows} type="tv" />
         <Carousel title="🎬 فیلم‌های ترند هفته" items={trendingMovies} type="movie" />
         
-        {/* ژانرها (دکمه‌های شیک) */}
         <div className="mb-12">
           <h2 className="text-xl font-bold text-white mb-4 pr-1">کاوش بر اساس ژانر</h2>
           <div className="flex gap-3 flex-wrap">
@@ -122,7 +131,6 @@ export default async function Home() {
 
         <Carousel title="⚡ بیشترین بیننده (Binged)" items={popularShows} type="tv" />
         <Carousel title="⭐ بیشترین اضافه‌شده" items={topRatedShows} type="tv" />
-
       </div>
     </div>
   );
