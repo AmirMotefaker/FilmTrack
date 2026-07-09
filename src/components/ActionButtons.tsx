@@ -51,14 +51,12 @@ export default function ActionButtons({ titleId, type }: { titleId: string, type
       >
         {loading === 'watching' ? "در حال ذخیره..." : "➕ افزودن به لیست (در حال تماشا)"}
       </Button>
-      <Button 
+            <Button 
         onClick={() => handleAddToList('completed')} 
         disabled={loading !== null}
         variant="outline" 
-        className="w-full border-gray-700 hover:bg-gray-800 py-6 text-lg"
+        className="w-full border-green-600 text-green-500 hover:bg-green-600 hover:text-white py-6 text-lg"
       >
-        {loading === 'completed' ? "در حال ذخیره..." : "✅ تماشا کردم"}
-      </Button>
     </div>
   )
 }

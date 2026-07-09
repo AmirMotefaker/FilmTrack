@@ -94,7 +94,7 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
               <h2 className="text-lg text-gray-500 mt-1">{title}</h2>
             </div>
 
-            {/* بخش امتیازها و لینک‌های خارجی */}
+                        {/* بخش امتیازها و لینک‌های خارجی */}
             <div className="flex flex-wrap items-center gap-4 text-gray-300 text-sm border-b border-gray-800 pb-4 mt-2">
               
               {/* امتیاز TMDB با تعداد آراء */}
@@ -103,7 +103,7 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
                 <span className="text-gray-500 text-xs mr-1">({data.vote_count?.toLocaleString()} رأی در TMDB)</span>
               </span>
 
-              {/* IMDb با لوگوی رسمی */}
+              {/* IMDb با لوگوی رسمی و امتیاز */}
               {data.imdb_id && (
                 <a href={`https://www.imdb.com/title/${data.imdb_id}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:opacity-80 transition-opacity bg-[#1a1a1a] px-3 py-1.5 rounded-lg border border-gray-700">
                   <svg width="40" height="20" viewBox="0 0 64 32" xmlns="http://www.w3.org/2000/svg">
@@ -114,15 +114,14 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
                 </a>
               )}
 
-              {/* Rotten Tomatoes با لوگوی رسمی گوجه‌فرنگی و لینک مستقیم */}
+              {/* Rotten Tomatoes با لوگوی گوجه‌فرنگی رسمی (بدون متن) و امتیاز درصدی */}
               <a href={rtUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:opacity-80 transition-opacity bg-[#1a1a1a] px-3 py-1.5 rounded-lg border border-gray-700">
-                {/* لوگوی رسمی گوجه فرنگی RT */}
-                <svg width="24" height="24" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M16 3c-2 0-3 1-3 3 0 1 0 1 1 2-1 0-2 0-3 1-1 1-1 2-1 3h12c0-1 0-2-1-3-1-1-2-1-3-1 1-1 1-1 1-2 0-2-1-3-3-3z" fill="#00A651"/>
-                  <circle cx="16" cy="17" r="12" fill="#ED1C24"/>
+                {/* لوگوی رسمی وکتوری RT */}
+                <svg width="28" height="28" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M50 12c-6 0-9 4-9 9 0 4 2 6 3 7-3 1-7 2-10 4-3 2-5 5-5 9h42c0-4-2-7-5-9-3-2-7-3-10-4 1-1 3-3 3-7 0-5-3-9-9-9z" fill="#009A44"/>
+                  <path d="M14 42c-2 0-4 1-4 4v8c0 18 12 34 40 34s40-16 40-34v-8c0-3-2-4-4-4H14z" fill="#E61E2A"/>
                 </svg>
-                <span className="font-bold text-white text-sm hidden sm:inline">Rotten Tomatoes</span>
-                <span className="font-bold text-white text-sm sm:hidden">RT</span>
+                <span className="font-bold text-white text-base">{Math.round((data.vote_average || 0) * 10)}%</span>
               </a>
             </div>
 
