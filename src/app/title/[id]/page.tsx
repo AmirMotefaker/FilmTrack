@@ -37,7 +37,6 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
   const releaseYear = data.release_date ? new Date(data.release_date).getFullYear() : data.first_air_date ? new Date(data.first_air_date).getFullYear() : 'N/A';
   const runtime = data.runtime || (data.episode_run_time && data.episode_run_time[0]) || 0;
 
-  // سیستم ترجمه خودکار
   let faOverview = faData.overview;
   if (!faOverview && data.overview) {
     try {
@@ -49,9 +48,9 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
     }
   }
 
-  // --- دریافت امتیازهای دقیق از OMDb ---
-  let imdbScore = data.vote_average?.toFixed(1) || "N/A"; // پیش‌فرض TMDB
-  let rtScore = `${Math.round((data.vote_average || 0) * 10)}%`; // پیش‌فرض TMDB
+  // دریافت امتیازهای دقیق از OMDb
+  let imdbScore = data.vote_average?.toFixed(1) || "N/A";
+  let rtScore = `${Math.round((data.vote_average || 0) * 10)}%`;
 
   if (process.env.OMDB_API_KEY && data.imdb_id) {
     try {
@@ -63,11 +62,11 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
         const imdbRating = ratings.find((r: any) => r.Source === "Internet Movie Database");
         const rtRating = ratings.find((r: any) => r.Source === "Rotten Tomatoes");
         
-        if (imdbRating) imdbScore = imdbRating.Value.split('/')[0]; // استخراج عدد از "8.1/10"
-        if (rtRating) rtScore = rtRating.Value; // استخراج "85%"
+        if (imdbRating) imdbScore = imdbRating.Value.split('/')[0];
+        if (rtRating) rtScore = rtRating.Value;
       }
     } catch {
-      // در صورت خطا، همان امتیاز TMDB نمایش داده می‌شود
+      // در صورت خطا، امتیاز TMDB باقی می‌ماند
     }
   }
 
@@ -114,18 +113,18 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
                 <span className="text-gray-500 text-xs mr-1">({data.vote_count?.toLocaleString()} رأی TMDB)</span>
               </span>
 
-              {/* IMDb با امتیاز دقیق و لایو */}
+              {/* IMDb (اصلاح SVG) */}
               {data.imdb_id && (
                 <a href={`https://www.imdb.com/title/${data.imdb_id}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:opacity-80 transition-opacity bg-[#1a1a1a] px-3 py-1.5 rounded-lg border border-gray-700">
                   <svg width="40" height="20" viewBox="0 0 64 32" xmlns="http://www.w3.org/2000/svg">
                     <rect width="64" height="32" rx="6" fill="#F5C518"/>
-                    <text x="32" y="22" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000" text-anchor="middle">IMDb</text>
+                    <text x="32" y="22" fontFamily="Arial, sans-serif" fontSize="14" fontWeight="bold" fill="#000" textAnchor="middle">IMDb</text>
                   </svg>
                   <span className="font-bold text-white text-base">{imdbScore}/10</span>
                 </a>
               )}
 
-              {/* Rotten Tomatoes با درصد دقیق و لایو */}
+              {/* Rotten Tomatoes */}
               <a href={rtUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:opacity-80 transition-opacity bg-[#1a1a1a] px-3 py-1.5 rounded-lg border border-gray-700">
                 <svg width="28" height="28" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                   <path d="M50 12c-6 0-9 4-9 9 0 4 2 6 3 7-3 1-7 2-10 4-3 2-5 5-5 9h42c0-4-2-7-5-9-3-2-7-3-10-4 1-1 3-3 3-7 0-5-3-9-9-9z" fill="#009A44"/>
