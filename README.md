@@ -94,4 +94,3 @@ This project is being built entirely in public! We believe in open-source and co
 
 
 <p align="center"> <strong>Made with ❤️ for Iranians by <a href="https://github.com/AmirMotefaker">Amir Motefaker</a></strong> </p>
-
