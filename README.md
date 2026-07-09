@@ -63,8 +63,12 @@ Whether you're a casual viewer or a hardcore cinephile, CineFan brings your ente
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/AmirMotefaker/CineFan.git
-cd CineFan
+git clone https://github.com/AmirMotefaker/CineFan.gitcd CineFan
+```
+### 2. Install dependencies
+
+```bash
+npm install
 ```
 
 <p align="center"> <strong>Made with ❤️ for Iranians by <a href="https://github.com/AmirMotefaker">Amir Motefaker</a></strong> </p>
