@@ -71,5 +71,14 @@ git clone https://github.com/AmirMotefaker/CineFan.gitcd CineFan
 npm install
 ```
 
+### 3. Set up environment variables
+Create a .env.local file in the root directory and add:
+
+```bash
+TMDB_API_KEY=your_tmdb_api_key
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
 <p align="center"> <strong>Made with ❤️ for Iranians by <a href="https://github.com/AmirMotefaker">Amir Motefaker</a></strong> </p>
 
