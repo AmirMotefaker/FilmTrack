@@ -14,6 +14,7 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
 
   if (!apiKey || !id) return notFound();
 
+  // گرفتن دیتای اصلی، بازیگران، تریلر و ترجمه فارسی
   const urls = [
     `https://api.themoviedb.org/3/${type}/${id}?api_key=${apiKey}&language=en-US&append_to_response=credits,videos`,
     `https://api.themoviedb.org/3/${type}/${id}?api_key=${apiKey}&language=fa-IR`
@@ -40,6 +41,7 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
 
   return (
     <div className="min-h-screen bg-[#0e0e0e] text-white relative">
+      {/* پس‌زمینه */}
       <div className="absolute top-0 left-0 w-full h-[70vh] overflow-hidden">
         {data.backdrop_path && <img src={`https://image.tmdb.org/t/p/original${data.backdrop_path}`} alt={title} className="w-full h-full object-cover opacity-20" />}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0e0e0e] via-[#0e0e0e]/80 to-transparent"></div>
@@ -49,6 +51,7 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
         <Link href="/" className="inline-flex items-center text-gray-400 hover:text-white mb-8"><ChevronLeft className="w-5 h-5" /> بازگشت</Link>
 
         <div className="flex flex-col md:flex-row gap-8">
+          {/* پوستر و دکمه‌ها */}
           <div className="w-full md:w-1/3 lg:w-1/4 flex-shrink-0">
             <div className="w-full aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-gray-800">
               {data.poster_path && <img src={`https://image.tmdb.org/t/p/w500${data.poster_path}`} alt={title} className="w-full h-full object-cover" />}
@@ -56,59 +59,57 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
             <ActionButtons titleId={id} type={type} />
           </div>
 
+          {/* اطلاعات */}
           <div className="flex-1 flex flex-col gap-4">
             <div>
               <h1 className="text-3xl md:text-5xl font-extrabold">{faTitle}</h1>
               <h2 className="text-lg text-gray-500 mt-1">{title}</h2>
             </div>
 
-                        {/* بخش امتیاز و لینک‌های خارجی */}
-            <div className="flex flex-wrap items-center gap-3 text-gray-300 text-sm border-b border-gray-800 pb-4 mt-2">
+            {/* بخش امتیازها و لینک‌های خارجی */}
+            <div className="flex flex-wrap items-center gap-4 text-gray-300 text-sm border-b border-gray-800 pb-4 mt-2">
               
-              {/* IMDb با امتیاز و لینک مستقیم */}
+              {/* امتیاز خود TMDB */}
+              <span className="flex items-center gap-1 font-bold text-yellow-500">
+                <Star className="w-4 h-4 fill-yellow-500" /> {data.vote_average?.toFixed(1)}/10
+                <span className="text-gray-500 text-xs mr-1">(TMDB)</span>
+              </span>
+
+              {/* IMDb با لوگوی رسمی و امتیاز */}
               {data.imdb_id && (
                 <a href={`https://www.imdb.com/title/${data.imdb_id}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:opacity-80 transition-opacity bg-[#1a1a1a] px-3 py-1.5 rounded-lg border border-gray-700">
                   <svg width="40" height="20" viewBox="0 0 64 32" xmlns="http://www.w3.org/2000/svg">
                     <rect width="64" height="32" rx="6" fill="#F5C518"/>
                     <text x="32" y="22" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000" text-anchor="middle">IMDb</text>
                   </svg>
-                  <span className="font-bold text-yellow-500 text-base">{data.vote_average?.toFixed(1)}/10</span>
+                  <span className="font-bold text-white text-base">{data.vote_average?.toFixed(1)}/10</span>
                 </a>
               )}
 
-              {/* Rotten Tomatoes با لینک جستجوی مستقیم فیلم */}
+              {/* Rotten Tomatoes با لوگوی رسمی و لینک مستقیم جستجو */}
               <a href={`https://www.rottentomatoes.com/search?search=${encodeURIComponent(title)}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:opacity-80 transition-opacity bg-[#1a1a1a] px-3 py-1.5 rounded-lg border border-gray-700">
-                <svg width="22" height="22" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                <svg width="24" height="24" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
                   <path d="M16 2C8.3 2 2 8.3 2 16s6.3 14 14 14 14-6.3 14-14S23.7 2 16 2zm0 4c5.5 0 10 4.5 10 10s-4.5 10-10 10S6 21.5 6 16 10.5 6 16 6z" fill="#FA320A"/>
                   <path d="M22 16l-8 5v-10z" fill="#FA320A"/>
                 </svg>
-                <span className="font-bold text-red-500 text-sm hidden sm:inline">Rotten Tomatoes</span>
-                <span className="font-bold text-red-500 text-sm sm:hidden">RT</span>
+                <span className="font-bold text-white text-sm hidden sm:inline">Rotten Tomatoes</span>
+                <span className="font-bold text-white text-sm sm:hidden">RT</span>
               </a>
-
-              {/* Letterboxd با لینک جستجوی مستقیم فیلم */}
-              <a href={`https://letterboxd.com/search/film/${encodeURIComponent(title)}/`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:opacity-80 transition-opacity bg-[#1a1a1a] px-3 py-1.5 rounded-lg border border-gray-700">
-                <svg width="45" height="20" viewBox="0 0 60 20" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="10" cy="10" r="8" fill="#FF8000"/>
-                  <circle cx="24" cy="10" r="8" fill="#00E054"/>
-                  <circle cx="38" cy="10" r="8" fill="#40BCF4"/>
-                </svg>
-                <span className="font-bold text-gray-300 text-sm hidden sm:inline">Letterboxd</span>
-                <span className="font-bold text-gray-300 text-sm sm:hidden">LB</span>
-              </a>
-
             </div>
 
+            {/* ژانرها */}
             <div className="flex flex-wrap gap-2">
               {data.genres?.map((g: any) => <Badge key={g.id} variant="secondary" className="bg-gray-800 text-gray-300">{g.name}</Badge>)}
             </div>
 
+            {/* تریلر */}
             {trailer && (
               <a href={`https://www.youtube.com/watch?v=${trailer.key}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-red-500 hover:text-red-400 mt-2 font-medium">
                 <PlayCircle className="w-5 h-5" /> تماشای تریلر رسمی
               </a>
             )}
 
+            {/* خلاصه داستان */}
             <div className="mt-4 space-y-3">
               <div>
                 <h3 className="text-lg font-bold mb-1">خلاصه داستان (فارسی)</h3>
@@ -120,6 +121,7 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
               </div>
             </div>
 
+            {/* بازیگران و عوامل */}
             {cast.length > 0 && (
               <div className="mt-6">
                 <h3 className="text-lg font-bold mb-3 flex items-center gap-2"><Users className="w-5 h-5 text-blue-500" /> بازیگران و عوامل</h3>
@@ -138,6 +140,7 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
               </div>
             )}
 
+            {/* لیست فصل‌ها */}
             {type === 'tv' && data.seasons && data.seasons.length > 0 && (
               <div className="mt-8">
                 <h3 className="text-lg font-bold mb-3 flex items-center gap-2"><Clapperboard className="w-5 h-5 text-blue-500" /> قسمت‌ها و فصل‌ها</h3>
@@ -165,6 +168,7 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
               </div>
             )}
 
+            {/* نظرات */}
             <CommentsSection titleId={id} titleType={type} initialComments={comments || []} isLoggedIn={!!session} />
           </div>
         </div>
