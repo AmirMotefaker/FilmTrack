@@ -21,9 +21,9 @@
 
 ---
 
-## ✨ About CineFan
+## ✨ About FilmTrack
 
-**CineFan** is a modern, Persian-first platform designed for movie and TV show enthusiasts. Track your watched content, get personalized release calendars, interact with a vibrant community without spoilers, and discover where to watch legally — all in one place.
+**FilmTrack** is a modern, Persian-first platform designed for movie and TV show enthusiasts. Track your watched content, get personalized release calendars, interact with a vibrant community without spoilers, and discover where to watch legally — all in one place.
 
 Whether you're a casual viewer or a hardcore cinephile, CineFan brings your entertainment journey to life.
 
