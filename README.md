@@ -78,6 +78,7 @@ Create a **.env.local** file in the root directory and add:
 
 ```bash
 TMDB_API_KEY=your_tmdb_api_key
+OMDB_API_KEY=your_omdb_api_key
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
