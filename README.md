@@ -63,7 +63,7 @@ Whether you're a casual viewer or a hardcore cinephile, CineFan brings your ente
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/AmirMotefaker/CineFan.gitcd CineFan
+git clone https://github.com/AmirMotefaker/FilmTrack.gitcd FilmTrack
 ```
 
 ### 2. Install dependencies
