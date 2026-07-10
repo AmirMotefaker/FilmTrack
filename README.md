@@ -5,7 +5,7 @@
   <img src="https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="TailwindCSS" />
 </p>
 
-<h1 align="center">🎬 CineFan</h1>
+<h1 align="center">🎬 FilmTrack</h1>
 <p align="center">
   <strong>The ultimate open-source tracker and social network for movie & TV show fans.</strong>
 </p>
@@ -16,16 +16,16 @@
 <br />
 
 <p align="center">
-  <img src="https://via.placeholder.com/800x400/1a1a2e/ffffff?text=CineFan+Preview" alt="CineFan Preview" width="80%" />
+  <img src="https://via.placeholder.com/800x400/1a1a2e/ffffff?text=FilmTrack+Preview" alt="FilmTrack Preview" width="80%" />
 </p>
 
 ---
 
-## ✨ About CineFan
+## ✨ About FilmTrack
 
-**CineFan** is a modern, Persian-first platform designed for movie and TV show enthusiasts. Track your watched content, get personalized release calendars, interact with a vibrant community without spoilers, and discover where to watch legally — all in one place.
+**FilmTrack** is a modern, Persian-first platform designed for movie and TV show enthusiasts. Track your watched content, get personalized release calendars, interact with a vibrant community without spoilers, and discover where to watch legally — all in one place.
 
-Whether you're a casual viewer or a hardcore cinephile, CineFan brings your entertainment journey to life.
+Whether you're a casual viewer or a hardcore cinephile, FilmTrack brings your entertainment journey to life.
 
 ---
 
@@ -63,7 +63,7 @@ Whether you're a casual viewer or a hardcore cinephile, CineFan brings your ente
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/AmirMotefaker/CineFan.gitcd CineFan
+git clone https://github.com/AmirMotefaker/FilmTrack.gitcd FilmTrack
 ```
 
 ### 2. Install dependencies
@@ -78,6 +78,7 @@ Create a **.env.local** file in the root directory and add:
 
 ```bash
 TMDB_API_KEY=your_tmdb_api_key
+OMDB_API_KEY=your_omdb_api_key
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
