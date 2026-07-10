@@ -5,7 +5,7 @@
   <img src="https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="TailwindCSS" />
 </p>
 
-<h1 align="center">🎬 CineFan</h1>
+<h1 align="center">🎬 FilmTrack</h1>
 <p align="center">
   <strong>The ultimate open-source tracker and social network for movie & TV show fans.</strong>
 </p>
