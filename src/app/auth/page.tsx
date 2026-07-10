@@ -48,10 +48,10 @@ export default function AuthPage() {
         <div className="text-center">
           <div className="inline-block mb-4">
              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg mx-auto">
-               <span className="text-white font-extrabold text-2xl">CF</span>
+               <span className="text-white font-extrabold text-2xl">FT</span>
              </div>
           </div>
-          <h1 className="text-3xl font-extrabold text-white">به CineFan خوش آمدید</h1>
+          <h1 className="text-3xl font-extrabold text-white">به FilmTrack خوش آمدید</h1>
         </div>
 
         {/* دکمه‌های ورود اجتماعی */}

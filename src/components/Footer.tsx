@@ -46,7 +46,7 @@ export default function Footer() {
       
       {/* کپی رایت اختصاصی شما */}
       <div className="border-t border-gray-900 py-6 text-center text-xs text-gray-600">
-        درست شده با عشق ❤️ برای ایرانیان توسط <a href="https://github.com/AmirMotefaker" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">امیر متفکر</a>
+        درست شده با عشق ❤️ برای ایرانیان توسط <a href="https://github.com/AmirMotefaker" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">امیر متفکر</a> | FilmTrack
       </div>
     </footer>
   );
