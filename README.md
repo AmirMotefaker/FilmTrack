@@ -15,9 +15,8 @@
 
 <br />
 
-<p align="center">
-[HomePage.webp](https://github.com/AmirMotefaker/FilmTrack/blob/e2a5d3b2df3b88c2b8591f4323d0738af289c045/HomePage.webp)
-</p>
+[HomePage.webp](https://github.com/AmirMotefaker/FilmTrack/blob/e2a5d3b2df3b88c2b8591f4323d0738af289c045/HomePage.png)
+
 
 ---
 
