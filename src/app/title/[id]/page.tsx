@@ -48,13 +48,16 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
     }
   }
 
-  // دریافت امتیازهای دقیق از OMDb
+  // --- دریافت امتیازهای دقیق از OMDb با سیستم کش کردن ---
   let imdbScore = data.vote_average?.toFixed(1) || "N/A";
   let rtScore = `${Math.round((data.vote_average || 0) * 10)}%`;
 
   if (process.env.OMDB_API_KEY && data.imdb_id) {
     try {
-      const omdbRes = await fetch(`https://www.omdbapi.com/?i=${data.imdb_id}&apikey=${process.env.OMDB_API_KEY}`);
+      // اضافه شدن next: { revalidate: 604800 } برای کش شدن امتیازها برای ۱ هفته
+      const omdbRes = await fetch(`https://www.omdbapi.com/?i=${data.imdb_id}&apikey=${process.env.OMDB_API_KEY}`, {
+        next: { revalidate: 604800 } // 604800 ثانیه = 1 هفته
+      });
       const omdbData = await omdbRes.json();
       
       if (omdbData.Response === "True") {
@@ -69,7 +72,7 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
       // در صورت خطا، امتیاز TMDB باقی می‌ماند
     }
   }
-
+  
   const trailer = data.videos?.results?.find((v: any) => v.type === 'Trailer' && v.site === 'YouTube');
   const director = data.credits?.crew?.find((c: any) => c.job === 'Director') || data.created_by?.[0];
   const cast = data.credits?.cast?.slice(0, 12) || [];
