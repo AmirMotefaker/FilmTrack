@@ -10,13 +10,10 @@ const withSerwist = withSerwistInit({
 const nextConfig = {
   reactStrictMode: true,
   turbopack: {},
-  // نادیده گرفتن خطاهای جزئی در زمان بیلد روی سرور
   typescript: {
     ignoreBuildErrors: true,
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  // بخش eslint کاملاً حذف شد
 };
 
 export default withSerwist(nextConfig);
