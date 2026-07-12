@@ -15,12 +15,19 @@ const vazirmatn = Vazirmatn({
 export const metadata: Metadata = {
   title: "FilmTrack | ردیاب فیلم و سریال",
   description: "جامعه بزرگ فیلم و سریال فارسی‌زبانان",
-  manifest: "/manifest.webmanifest", // این خط اضافه شود
+  manifest: "/manifest.json", 
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
     title: 'FilmTrack',
   },
+};
+
+export const viewport = {
+  themeColor: '#0e0e0e',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({
