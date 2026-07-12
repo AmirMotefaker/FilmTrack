@@ -13,8 +13,14 @@ const vazirmatn = Vazirmatn({
 });
 
 export const metadata: Metadata = {
-  title: "CineFan | ردیاب فیلم و سریال",
+  title: "FilmTrack | ردیاب فیلم و سریال",
   description: "جامعه بزرگ فیلم و سریال فارسی‌زبانان",
+  manifest: "/manifest.webmanifest", // این خط اضافه شود
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'FilmTrack',
+  },
 };
 
 export default function RootLayout({

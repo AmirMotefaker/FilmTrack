@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
+    "@serwist/build": "^9.5.11",
+    "@serwist/next": "^9.5.11",
     "@supabase/ssr": "^0.12.0",
     "@supabase/supabase-js": "^2.110.0",
     "class-variance-authority": "^0.7.1",
