@@ -15,10 +15,6 @@
 
 <br />
 
-<p align="center">
-  <img src="https://via.placeholder.com/800x400/1a1a2e/ffffff?text=FilmTrack+Preview" alt="FilmTrack Preview" width="80%" />
-</p>
-
 ---
 
 ## ✨ About FilmTrack
