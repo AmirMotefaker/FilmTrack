@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">FilmTrack</string>
+    <string name="title_activity_main">FilmTrack</string>
+    <string name="package_name">ir.filmtrack.app</string>
+    <string name="custom_url_scheme">ir.filmtrack.app</string>
+</resources>

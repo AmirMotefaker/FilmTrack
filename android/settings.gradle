@@ -1,0 +1,20 @@
+pluginManagement {
+    repositories {
+        maven { url 'https://repo.huaweicloud.com/repository/maven-public/' }
+        maven { url 'https://mirrors.huaweicloud.com/android.googlesource.com/' }
+        google()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        maven { url 'https://repo.huaweicloud.com/repository/maven-public/' }
+        maven { url 'https://mirrors.huaweicloud.com/android.googlesource.com/' }
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.name = "FilmTrack"
+include ':app'
