@@ -35,14 +35,14 @@ jobs:
       with:
         gradle-version: '8.14.3'
 
-    - name: Clean Gradle Configs (Apply Gradle 8 Standards)
+    - name: Clean Gradle Configs (Allow Capacitor flatDir)
       run: |
         # تنظیمات پایه
         echo "sdk.dir=$ANDROID_HOME" > ./android/local.properties
         echo "android.useAndroidX=true" > ./android/gradle.properties
         echo "android.enableJetifier=true" >> ./android/gradle.properties
         
-        # بازنویسی settings.gradle (تعریف مخازن فقط در اینجا)
+        # بازنویسی settings.gradle
         cat << 'EOF' > ./android/settings.gradle
         pluginManagement {
             repositories {
@@ -52,7 +52,7 @@ jobs:
             }
         }
         dependencyResolutionManagement {
-            repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+            repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
             repositories {
                 google()
                 mavenCentral()
@@ -82,7 +82,7 @@ jobs:
         }
         EOF
 
-        # بازنویسی build.gradle (حذف allprojects طبق استاندارد جدید)
+        # بازنویسی build.gradle (حذف allprojects)
         cat << 'EOF' > ./android/build.gradle
         // Top-level build file
         buildscript {
