@@ -35,11 +35,17 @@ jobs:
       with:
         gradle-version: '8.14.3'
 
-    - name: Clean Gradle Configs (Remove Aliyun Mirrors & Proxies)
+    - name: Clean Gradle Configs (Safely Remove Mirrors & Proxies)
       run: |
+        # پاک کردن تنظیمات پروکسی
         echo "" > ./android/gradle.properties
         echo "sdk.dir=$ANDROID_HOME" > ./android/local.properties
         
+        # حذف امن خطوط آلیون بدون خراب کردن ساختار کاپاسیتور
+        sed -i '/aliyun.com/d' ./android/build.gradle
+        sed -i '/aliyun.com/d' ./android/app/build.gradle
+        
+        # بازنویسی settings.gradle برای استفاده از مخازن رسمی گوگل
         cat << 'EOF' > ./android/settings.gradle
         pluginManagement {
             repositories {
@@ -57,28 +63,6 @@ jobs:
         }
         rootProject.name = "FilmTrack"
         include ':app'
-        EOF
-
-        cat << 'EOF' > ./android/build.gradle
-        // Top-level build file
-        buildscript {
-            repositories {
-                google()
-                mavenCentral()
-            }
-            dependencies {
-                classpath 'com.android.tools.build:gradle:8.0.0'
-            }
-        }
-        allprojects {
-            repositories {
-                google()
-                mavenCentral()
-            }
-        }
-        task clean(type: Delete) {
-            delete rootProject.buildDir
-        }
         EOF
 
     - name: Grant execute permission for gradlew
