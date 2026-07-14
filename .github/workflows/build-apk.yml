@@ -35,14 +35,14 @@ jobs:
       with:
         gradle-version: '8.14.3'
 
-    - name: Clean Gradle Configs (Safely Remove Mirrors & Restore SDK)
+    - name: Clean Gradle Configs (Apply Gradle 8 Standards)
       run: |
-        # پاک کردن تنظیمات پروکسی
+        # تنظیمات پایه
         echo "sdk.dir=$ANDROID_HOME" > ./android/local.properties
         echo "android.useAndroidX=true" > ./android/gradle.properties
         echo "android.enableJetifier=true" >> ./android/gradle.properties
         
-        # بازنویسی settings.gradle برای استفاده از مخازن رسمی گوگل
+        # بازنویسی settings.gradle (تعریف مخازن فقط در اینجا)
         cat << 'EOF' > ./android/settings.gradle
         pluginManagement {
             repositories {
@@ -62,7 +62,7 @@ jobs:
         include ':app'
         EOF
 
-        # بازنویسی variables.gradle تا compileSdkVersion شناخته شود
+        # بازنویسی variables.gradle
         cat << 'EOF' > ./android/variables.gradle
         ext {
             minSdkVersion = 22
@@ -82,7 +82,7 @@ jobs:
         }
         EOF
 
-        # بازنویسی کامل build.gradle بدون آلیون و با متغیرهای SDK
+        # بازنویسی build.gradle (حذف allprojects طبق استاندارد جدید)
         cat << 'EOF' > ./android/build.gradle
         // Top-level build file
         buildscript {
@@ -95,12 +95,6 @@ jobs:
             }
         }
         apply from: 'variables.gradle'
-        allprojects {
-            repositories {
-                google()
-                mavenCentral()
-            }
-        }
         task clean(type: Delete) {
             delete rootProject.buildDir
         }
