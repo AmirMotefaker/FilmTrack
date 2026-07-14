@@ -35,7 +35,7 @@ jobs:
       with:
         gradle-version: '8.14.3'
 
-    - name: Clean Gradle Configs (Allow Capacitor flatDir)
+    - name: Clean Gradle Configs (Keep original variables.gradle)
       run: |
         # تنظیمات پایه
         echo "sdk.dir=$ANDROID_HOME" > ./android/local.properties
@@ -62,27 +62,7 @@ jobs:
         include ':app'
         EOF
 
-        # بازنویسی variables.gradle
-        cat << 'EOF' > ./android/variables.gradle
-        ext {
-            minSdkVersion = 22
-            compileSdkVersion = 34
-            targetSdkVersion = 34
-            androidxAppCompatVersion = "1.6.1"
-            androidxCoreVersion = "1.10.0"
-            androidxMaterialVersion = "1.9.0"
-            androidxBrowserVersion = "1.5.0"
-            androidxLocalbroadcastmanagerVersion = "1.0.0"
-            firebaseMessagingVersion = "23.0.0"
-            playServicesLocationVersion = "21.0.1"
-            junitVersion = "4.13.2"
-            androidxJunitVersion = "1.1.5"
-            androidxEspressoCoreVersion = "3.5.1"
-            cordovaAndroidVersion = "10.1.1"
-        }
-        EOF
-
-        # بازنویسی build.gradle (حذف allprojects)
+        # بازنویسی build.gradle (حذف allprojects و آلیون، حفظ variables.gradle)
         cat << 'EOF' > ./android/build.gradle
         // Top-level build file
         buildscript {
