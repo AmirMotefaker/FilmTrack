@@ -35,9 +35,11 @@ jobs:
       with:
         gradle-version: '8.14.3'
 
-    - name: Clean Gradle and Android Configs (Bypass Local Proxies)
+    - name: Clean Gradle Configs (Remove Aliyun Mirrors & Proxies)
       run: |
         echo "" > ./android/gradle.properties
+        echo "sdk.dir=$ANDROID_HOME" > ./android/local.properties
+        
         cat << 'EOF' > ./android/settings.gradle
         pluginManagement {
             repositories {
@@ -56,7 +58,28 @@ jobs:
         rootProject.name = "FilmTrack"
         include ':app'
         EOF
-        echo "sdk.dir=$ANDROID_HOME" > ./android/local.properties
+
+        cat << 'EOF' > ./android/build.gradle
+        // Top-level build file
+        buildscript {
+            repositories {
+                google()
+                mavenCentral()
+            }
+            dependencies {
+                classpath 'com.android.tools.build:gradle:8.0.0'
+            }
+        }
+        allprojects {
+            repositories {
+                google()
+                mavenCentral()
+            }
+        }
+        task clean(type: Delete) {
+            delete rootProject.buildDir
+        }
+        EOF
 
     - name: Grant execute permission for gradlew
       run: chmod +x ./android/gradlew
