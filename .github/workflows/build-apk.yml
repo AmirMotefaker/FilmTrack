@@ -35,8 +35,31 @@ jobs:
       with:
         gradle-version: '8.14.3'
 
-    - name: Setup Android SDK Path
-      run: echo "sdk.dir=$ANDROID_HOME" > ./android/local.properties
+    - name: Clean Gradle and Android Configs (Bypass Local Proxies)
+      run: |
+        echo "" > ./android/gradle.properties
+        cat << 'EOF' > ./android/settings.gradle
+        pluginManagement {
+            repositories {
+                google()
+                mavenCentral()
+                gradlePluginPortal()
+            }
+        }
+        dependencyResolutionManagement {
+            repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+            repositories {
+                google()
+                mavenCentral()
+            }
+        }
+        rootProject.name = "FilmTrack"
+        include ':app'
+        EOF
+        echo "sdk.dir=$ANDROID_HOME" > ./android/local.properties
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x ./android/gradlew
 
     - name: Build Debug APK
       working-directory: ./android
