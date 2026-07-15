@@ -27,58 +27,16 @@ jobs:
     - name: Install NPM dependencies
       run: npm install
 
-    - name: Copy Web Assets to Android
-      run: npx cap copy android
+    - name: Sync Capacitor Android
+      run: npx cap sync android
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
-        gradle-version: '8.14.3'
+        gradle-version: '8.7'
 
-    - name: Clean Gradle Configs (Keep original variables.gradle)
-      run: |
-        # تنظیمات پایه
-        echo "sdk.dir=$ANDROID_HOME" > ./android/local.properties
-        echo "android.useAndroidX=true" > ./android/gradle.properties
-        echo "android.enableJetifier=true" >> ./android/gradle.properties
-        
-        # بازنویسی settings.gradle
-        cat << 'EOF' > ./android/settings.gradle
-        pluginManagement {
-            repositories {
-                google()
-                mavenCentral()
-                gradlePluginPortal()
-            }
-        }
-        dependencyResolutionManagement {
-            repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
-            repositories {
-                google()
-                mavenCentral()
-            }
-        }
-        rootProject.name = "FilmTrack"
-        include ':app'
-        EOF
-
-        # بازنویسی build.gradle (حذف allprojects و آلیون، حفظ variables.gradle)
-        cat << 'EOF' > ./android/build.gradle
-        // Top-level build file
-        buildscript {
-            repositories {
-                google()
-                mavenCentral()
-            }
-            dependencies {
-                classpath 'com.android.tools.build:gradle:8.0.0'
-            }
-        }
-        apply from: 'variables.gradle'
-        task clean(type: Delete) {
-            delete rootProject.buildDir
-        }
-        EOF
+    - name: Patch Gradle Settings for Cloud Build
+      run: sed -i 's/FAIL_ON_PROJECT_REPOS/PREFER_SETTINGS/g' ./android/settings.gradle
 
     - name: Grant execute permission for gradlew
       run: chmod +x ./android/gradlew
