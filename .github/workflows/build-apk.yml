@@ -35,8 +35,34 @@ jobs:
       with:
         gradle-version: '8.7'
 
-    - name: Patch Gradle Settings for Cloud Build
-      run: sed -i 's/FAIL_ON_PROJECT_REPOS/PREFER_SETTINGS/g' ./android/settings.gradle
+    - name: Sanitize Android Configs (Remove Local Proxies & Mirrors)
+      run: |
+        # ۱. پاک کردن کامل پروکسی‌های محلی از gradle.properties
+        cat << 'EOF' > ./android/gradle.properties
+        android.useAndroidX=true
+        android.enableJetifier=true
+        org.gradle.jvmargs=-Xmx1536m
+        EOF
+
+        # ۲. بازنویسی build.gradle (حذف آلیون، حفظ variables.gradle برای کاپاسیتور)
+        cat << 'EOF' > ./android/build.gradle
+        buildscript {
+            repositories {
+                google()
+                mavenCentral()
+            }
+            dependencies {
+                classpath 'com.android.tools.build:gradle:8.0.0'
+            }
+        }
+        apply from: 'variables.gradle'
+        task clean(type: Delete) {
+            delete rootProject.buildDir
+        }
+        EOF
+
+        # ۳. رفع مشکل مخزن flatDir کاپاسیتور
+        sed -i 's/FAIL_ON_PROJECT_REPOS/PREFER_SETTINGS/g' ./android/settings.gradle
 
     - name: Grant execute permission for gradlew
       run: chmod +x ./android/gradlew
