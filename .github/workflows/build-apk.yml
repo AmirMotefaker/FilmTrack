@@ -152,7 +152,7 @@ jobs:
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
         run: |
-          echo "$KEYSTORE_BASE64" | base64 --decode -i > $RUNNER_TEMP/filmtrack.keystore
+          printf "%s" "$KEYSTORE_BASE64" | tr -cd 'A-Za-z0-9+/=' | base64 --decode > $RUNNER_TEMP/filmtrack.keystore
           if [ ! -s "$RUNNER_TEMP/filmtrack.keystore" ]; then
             echo "Error: Keystore file is empty or invalid!"
             exit 1
