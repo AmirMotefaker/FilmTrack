@@ -152,7 +152,12 @@ jobs:
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
         run: |
-          echo "$KEYSTORE_BASE64" | base64 --decode > $RUNNER_TEMP/filmtrack.keystore
+          echo "$KEYSTORE_BASE64" | tr -d '\n\r ' | base64 --decode > $RUNNER_TEMP/filmtrack.keystore
+          # بررسی اینکه فایل درست ساخته شده است
+          if [ ! -s "$RUNNER_TEMP/filmtrack.keystore" ]; then
+            echo "Error: Keystore file is empty or invalid!"
+            exit 1
+          fi
 
       - name: Grant execute permission to Gradle Wrapper
         run: chmod +x android/gradlew
