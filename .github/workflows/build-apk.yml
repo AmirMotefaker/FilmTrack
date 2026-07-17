@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Build Android Release APK
 
 on:
   push:
@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   build:
-    name: Build Debug APK
+    name: Build Release APK
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -143,30 +143,39 @@ jobs:
           echo "Capacitor settings:"
           cat android/capacitor.settings.gradle
 
+      # =======================================================
+      # مراحل جدید برای ساخت نسخه رسمی و امضا شده (Release)
+      # =======================================================
+
+      - name: Decode Keystore
+        shell: bash
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > $RUNNER_TEMP/filmtrack.keystore
+
       - name: Grant execute permission to Gradle Wrapper
         run: chmod +x android/gradlew
 
-      - name: Build Debug APK
+      - name: Build Signed Release APK
         working-directory: android
-        run: ./gradlew clean assembleDebug --no-daemon -x lint --stacktrace
+        run: ./gradlew clean assembleRelease --no-daemon -x lint --stacktrace -Pandroid.injected.signing.store.file=$RUNNER_TEMP/filmtrack.keystore -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
 
       - name: Verify APK
         shell: bash
         run: |
-          APK_PATH="android/app/build/outputs/apk/debug/app-debug.apk"
+          APK_PATH="android/app/build/outputs/apk/release/app-release.apk"
 
           if [ ! -f "$APK_PATH" ]; then
-            echo "::error::APK was not generated at $APK_PATH"
+            echo "::error::Release APK was not generated at $APK_PATH"
             find android/app/build/outputs -type f -print 2>/dev/null || true
             exit 1
           fi
 
           ls -lh "$APK_PATH"
 
-      - name: Upload Debug APK
+      - name: Upload Release APK
         uses: actions/upload-artifact@v4
         with:
-          name: FilmTrack-Debug-APK
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: FilmTrack-Release-APK
+          path: android/app/build/outputs/apk/release/app-release.apk
           if-no-files-found: error
           retention-days: 30
